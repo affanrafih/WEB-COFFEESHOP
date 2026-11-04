@@ -42,9 +42,27 @@ function redirect($p) { header('Location: ' . BASE . $p); exit; }
 function is_login()   { return isset($_SESSION['user']); }
 function is_admin()   { return is_login() && $_SESSION['user']['role'] === 'admin'; }
 function is_pembeli() { return is_login() && $_SESSION['user']['role'] === 'pembeli'; }
+function is_kasir() { return is_login() && $_SESSION['user']['role'] === 'kasir';}
+function is_staff() { return is_admin() || is_kasir(); }
+function wajib_staff() { if (!is_staff()) redirect('/login.php'); }
 function wajib_admin() { if (!is_admin()) redirect('/login.php'); }
 
 // INTI FITUR DISKON: pembeli login -> harga * 0.9, selain itu harga normal
 function harga_final($harga) {
     return is_pembeli() ? (int) round($harga * (1 - DISKON)) : (int) $harga;
+}
+
+const KATEGORI = ['kopi' => 'Kopi', 'non-kopi' => 'Non-Kopi', 'makanan' => 'Makanan'];
+
+// Upload gambar produk. Return nama file baru, atau '' kalau gagal (pesan error masuk ke $error)
+function upload_gambar($f, &$error) {
+    $mime = $f['error'] === UPLOAD_ERR_OK ? (new finfo(FILEINFO_MIME_TYPE))->file($f['tmp_name']) : '';
+    $ext  = ['image/jpeg' => 'jpg', 'image/png' => 'png', 'image/webp' => 'webp'][$mime] ?? null;
+    if (!$ext || $f['size'] > 2 * 1024 * 1024) {
+        $error = 'Gambar harus JPG/PNG/WEBP maksimal 2MB.';
+        return '';
+    }
+    $nama = bin2hex(random_bytes(8)) . '.' . $ext;   // nama acak, bukan nama asli file
+    move_uploaded_file($f['tmp_name'], __DIR__ . '/uploads/' . $nama);
+    return $nama;
 }

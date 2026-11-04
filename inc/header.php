@@ -31,6 +31,9 @@ td,th{padding:8px;border-bottom:1px solid #eee;text-align:left}
     <a href="<?= BASE ?>/admin/index.php">Produk</a>
     <a href="<?= BASE ?>/admin/users.php">User</a>
   <?php endif; ?>
+  <?php if (is_staff()): ?>
+    <a href="<?= BASE ?>/view_orders.php">Pesanan</a>
+  <?php endif; ?>
   <span class="sp"></span>
   <?php if (is_login()): ?>
     <span style="color:#fff">Halo, <?= e($_SESSION['user']['nama']) ?></span>
@@ -39,4 +42,5 @@ td,th{padding:8px;border-bottom:1px solid #eee;text-align:left}
     <a href="<?= BASE ?>/login.php">Login</a>
     <a href="<?= BASE ?>/register.php">Register</a>
   <?php endif; ?>
+
 </nav><main>
