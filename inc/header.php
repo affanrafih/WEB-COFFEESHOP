@@ -34,6 +34,9 @@ td,th{padding:8px;border-bottom:1px solid #eee;text-align:left}
   <?php if (is_staff()): ?>
     <a href="<?= BASE ?>/view_orders.php">Pesanan</a>
   <?php endif; ?>
+    <?php if (!is_staff()): ?>
+    <a href="<?= BASE ?>/cart.php">🛒 Keranjang (<?= cart_count() ?>)</a>
+  <?php endif; ?>
   <span class="sp"></span>
   <?php if (is_login()): ?>
     <span style="color:#fff">Halo, <?= e($_SESSION['user']['nama']) ?></span>

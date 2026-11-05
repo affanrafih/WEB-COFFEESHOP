@@ -66,3 +66,5 @@ function upload_gambar($f, &$error) {
     move_uploaded_file($f['tmp_name'], __DIR__ . '/uploads/' . $nama);
     return $nama;
 }
+
+function cart_count() { return array_sum(array_column($_SESSION['cart'] ?? [])); }

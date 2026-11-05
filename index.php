@@ -60,8 +60,6 @@ include 'inc/header.php';
   <a href="index.php" class="btn" style="background:#999">Reset</a>
 </form>
 
-<!-- Form pemesanan membungkus semua kartu (tidak untuk admin) -->
-<?php if (!is_admin()): ?><form method="post" action="order.php"><?php endif; ?>
 <div class="grid">
 <?php foreach ($produk as $p): $final = harga_final($p['harga']); ?>
   <div class="card">
@@ -77,19 +75,16 @@ include 'inc/header.php';
       <b><?= rupiah($p['harga']) ?></b>
     <?php endif; ?>
 
-    <?php if (!is_admin()): ?>
-      <br>Jumlah: <input type="number" name="qty[<?= $p['id'] ?>]" min="0" value="0" style="width:60px">
+    <?php if (!is_staff()): ?>
+      <form method="post" action="cart.php" style="margin-top:8px">
+        <input type="hidden" name="aksi" value="tambah">
+        <input type="hidden" name="id" value="<?= $p['id'] ?>">
+        <input type="number" name="qty" min="1" max="99" value="1" style="width:60px">
+        <button>+ Keranjang</button>
+      </form>
     <?php endif; ?>
   </div>
 <?php endforeach; ?>
 </div>
 <?php if (!$produk): ?><p>Menu tidak ditemukan.</p><?php endif; ?>
-
-<?php if (!is_admin() && $produk): ?>
-  <p>
-    <?php if (!is_login()): ?><input name="nama_pemesan" placeholder="Nama pemesan" required><?php endif; ?>
-    <button>Pesan Sekarang</button>
-  </p>
-</form>
-<?php endif; ?>
-<?php include 'inc/footer.php'; ?>
+<?php include '../inc/footer.php'; ?>
