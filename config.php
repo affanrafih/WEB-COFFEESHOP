@@ -67,4 +67,23 @@ function upload_gambar($f, &$error) {
     return $nama;
 }
 
-function cart_count() { return array_sum(array_column($_SESSION['cart'] ?? [])); }
+function cart_count() { return array_sum($_SESSION['cart'] ?? []); }
+
+function label_status($s) {
+   return ['pending' => 'menunggu', 'paid' => 'dibayar', 'done' => 'selesai'][$s] ?? $s;
+}
+
+function ambil_pesanan($id) {
+    $o = db_one('SELECT * FROM pesanan WHERE id=?', 'i', [$id]);
+    if (!$o) return null;
+    $o['item'] = db_all('SELECT produk_id, nama_produk, harga, qty, harga*qty 
+    AS subtotal FROM pesanan_item WHERE pesanan_id=?', 'i', [$id]);
+
+    return $o;
+}
+
+function boleh_lihat_pesanan($o) {
+    if(is_staff()) return true;
+    if(is_pembeli() && (int)$o['user_id'] === (int)($_SESSION['user']['id'] ?? 0)) return true;
+    return in_array((int)$o['id'], $_SESSION['pesanan_saya'] ?? []);
+}

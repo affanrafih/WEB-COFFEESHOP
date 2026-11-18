@@ -87,4 +87,4 @@ include 'inc/header.php';
 <?php endforeach; ?>
 </div>
 <?php if (!$produk): ?><p>Menu tidak ditemukan.</p><?php endif; ?>
-<?php include '../inc/footer.php'; ?>
+<?php include 'inc/footer.php'; ?>

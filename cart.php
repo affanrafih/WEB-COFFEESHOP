@@ -44,7 +44,7 @@ if ($cart) {
         $items[] = $r;
     }
 }
-include '../inc/header.php';
+include 'inc/header.php';
 ?>
 <h2>Keranjang</h2>
 
@@ -96,4 +96,4 @@ include '../inc/header.php';
   </form>
   <a class="btn" href="checkout.php">Checkout</a>
 <?php endif; ?>
-<?php include '../inc/footer.php'; ?>
+<?php include 'inc/footer.php'; ?>
